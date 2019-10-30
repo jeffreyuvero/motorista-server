@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const jwtKey = 'motorista_jwt_secret_key'
 const jwtExpirySeconds = 300
 
-export.login = (req, res) => {
+exports.login = (req, res) => {
 	const {username, password} = req.body
 	const token = jwt.sign({username} , jwtKey, {
 		expiresIn: jwtExpirySeconds
