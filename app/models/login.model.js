@@ -5,7 +5,7 @@ const LoginSchema = mongoose.Schema({
 	password: String, 
 	userID: String
 }, {
-	timestamp: false
+	timestamp: true
 })
 
-module.exports = mongoose.model('Login', UserSchema)
+module.exports = mongoose.model('Login', LoginSchema)
