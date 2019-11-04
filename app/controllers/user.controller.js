@@ -4,9 +4,27 @@ const jwt = require('jsonwebtoken');
 
 
 const jwtKey = 'motorista_jwt_secret_key'
+const pub = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplZmZyZXl1dmVybyIsImlhdCI6MTU3Mjg0NTI4OSwiZXhwIjoxNTcyODQ1NTg5fQ.J53pvwz4dviqcDKWhrKDK3xXD0ojShNFEm5TcUSiAw8';
 const jwtExpirySeconds = 300
 
 exports.create = (req, res) => {
+
+	const token = req.headers.authorization.replace('Bearer ', '');
+	// req.headers.authorization.replace('Bearer ', '');
+
+	if(token){
+		jwt.verify(token, jwtKey, (err,decode) => {
+			if(err){
+				console.log('in_err')
+				throw err; 
+			}
+		})
+	}else{
+		return res.status(500).send({
+			message: "Some error occurred while adding data"
+		})
+	}
+
 
 	if(!req.body) {
 		return res.status(400).send({
