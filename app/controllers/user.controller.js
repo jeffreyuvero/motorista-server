@@ -1,5 +1,6 @@
 const User = require('../models/user.model.js'); 
 const Login = require('../models/login.model.js'); 
+const Motorcycle = require('../models/motorcycle.model.js'); 
 const jwt = require('jsonwebtoken');
 
 
@@ -41,6 +42,7 @@ exports.create = (req, res) => {
 	    gender: req.body.gender,
 	    emailAddress: req.body.emailAddress,
 	    contactNumber: req.body.contactNumber,
+	    image: req.body.contactNumber,
 	});
 
 	
@@ -55,6 +57,20 @@ exports.create = (req, res) => {
 
 	 	res.send(data)
 	 	login.save()
+
+	 	const motorcycles = req.body.motorcycle; 
+
+	 	for(i = 0; i <= motorcycles.length; i++){
+	 		const motorcycle = new Motorcycle({
+	 			brand: motorcycles[i].brand,
+	 			model: motorcycles[i].model,
+	 			type: motorcycles[i].type,
+	 			year: motorcycles[i].year,
+	 			image:motorcycles[i].image,
+	 			userID: data._id
+	 		})
+	 		motorcycle.save();
+	 	}
 	 }).catch(err => {
 	 	res.status(500).send({
 	 	    message: err.message || "Some error occurred while creating the User."
