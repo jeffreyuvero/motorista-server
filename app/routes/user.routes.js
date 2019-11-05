@@ -4,5 +4,6 @@ module.exports = (app) => {
 
 	app.post('/login/', login.login)
 	app.post('/user/', user.create)
+	app.get('/user/:id', user.findOne)
 }
 

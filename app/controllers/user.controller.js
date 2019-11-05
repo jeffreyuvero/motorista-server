@@ -16,7 +16,6 @@ exports.create = (req, res) => {
 	if(token){
 		jwt.verify(token, jwtKey, (err,decode) => {
 			if(err){
-				console.log('in_err')
 				throw err; 
 			}
 		})
@@ -76,4 +75,54 @@ exports.create = (req, res) => {
 	 	    message: err.message || "Some error occurred while creating the User."
 	 	});
 	 })
+}
+
+
+exports.findOne = (req, res) => {
+
+	const token = req.headers.authorization.replace('Bearer ', '');
+
+	if(token){
+		jwt.verify(token, jwtKey, (err,decode) => {
+			if(err){
+				throw err;
+			}
+		})
+	}else {
+		return res.status(500).send({
+			message: "Some error occured while getting data"
+		})
+	}
+
+
+	if(!req.params.id){
+		return res.status(500).send({
+			message: "Missing Indentification"
+		})
+	}
+
+	let json = {}; 
+	User.findById(req.params.id)
+		.then(user => {
+			Login.find({userID: req.params.id})
+			.then(login => {
+				Motorcycle.find({userID: req.params.id})
+				.then(motorcycle => {
+					res.status(200).json({user, login, motorcycle})
+				}).catch(err => {
+					res.status(500).send({
+						message: "Error in retrieving login information"
+					})
+				})
+			}).catch(err => {
+				res.status(500).send({
+					message: "Error in retrieving login information"
+				})
+			})
+		}).catch(err => {
+			res.status(500).send({
+				message: "Error in retrieving user information"
+			})
+		})
+
 }

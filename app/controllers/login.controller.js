@@ -11,7 +11,7 @@ exports.login = (req, res) => {
 		expiresIn: jwtExpirySeconds
 	})
 
-	console.log('token', token)
+	res.status(200).send(token)
 
 	res.cookie('token', token, {maxAge: jwtExpirySeconds * 1000})
 	res.end()
