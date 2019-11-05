@@ -6,6 +6,7 @@ const MotorcycleSchema = mongoose.Schema({
 	type: String, 
 	year: String,
 	image: String,
+	userID: String
 }, {
 	timestamp: true
 })
