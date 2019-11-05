@@ -2,6 +2,7 @@ const User = require('../models/user.model.js');
 const Login = require('../models/login.model.js'); 
 const Motorcycle = require('../models/motorcycle.model.js'); 
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 
 const jwtKey = 'motorista_jwt_secret_key'
@@ -9,6 +10,8 @@ const pub = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplZmZyZXl1dm
 const jwtExpirySeconds = 300
 
 exports.create = (req, res) => {
+
+	
 
 	const token = req.headers.authorization.replace('Bearer ', '');
 	// req.headers.authorization.replace('Bearer ', '');
@@ -32,49 +35,50 @@ exports.create = (req, res) => {
         });
 	}
 
-	
-	const user = new User({
-	    lastname: req.body.lastname,
-	    firstname: req.body.firstname, 
-	    middlename: req.body.middlename, 
-	    address: req.body.address,
-	    gender: req.body.gender,
-	    emailAddress: req.body.emailAddress,
-	    contactNumber: req.body.contactNumber,
-	    image: req.body.contactNumber,
-	});
+	bcrypt.hash(req.body.password, 10, (err, hash) => {
+		const user = new User({
+		    lastname: req.body.lastname,
+		    firstname: req.body.firstname, 
+		    middlename: req.body.middlename, 
+		    address: req.body.address,
+		    gender: req.body.gender,
+		    emailAddress: req.body.emailAddress,
+		    contactNumber: req.body.contactNumber,
+		    image: req.body.contactNumber,
+		});
 
-	
 
-	user.save()
-	.then(data => {
-	 	const login = new Login({
-	 	    username: req.body.username,
-	 	    password: req.body.password, 
-	 	    userID: data._id
-	 	});
+		user.save()
+		.then(data => {
+			const login = new Login({
+			    username: req.body.username,
+			    password: hash, 
+			    userID: data._id
+			});
 
-	 	res.send(data)
-	 	login.save()
+			res.send(data)
+			login.save()
+			const motorcycles = req.body.motorcycle; 
 
-	 	const motorcycles = req.body.motorcycle; 
+			for(i = 0; i <= motorcycles.length; i++){
+				const motorcycle = new Motorcycle({
+					brand: motorcycles[i].brand,
+					model: motorcycles[i].model,
+					type: motorcycles[i].type,
+					year: motorcycles[i].year,
+					image:motorcycles[i].image,
+					userID: data._id
+				})
+				motorcycle.save();
+			}
+			
+		 }).catch(err => {
+		 	res.status(500).send({
+		 	    message: err.message || "Some error occurred while creating the User."
+		 	});
+		 })
+	})
 
-	 	for(i = 0; i <= motorcycles.length; i++){
-	 		const motorcycle = new Motorcycle({
-	 			brand: motorcycles[i].brand,
-	 			model: motorcycles[i].model,
-	 			type: motorcycles[i].type,
-	 			year: motorcycles[i].year,
-	 			image:motorcycles[i].image,
-	 			userID: data._id
-	 		})
-	 		motorcycle.save();
-	 	}
-	 }).catch(err => {
-	 	res.status(500).send({
-	 	    message: err.message || "Some error occurred while creating the User."
-	 	});
-	 })
 }
 
 
