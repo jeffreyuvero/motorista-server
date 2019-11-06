@@ -33,13 +33,13 @@ exports.login = (req, res) => {
 	Login.findOne({username: username}, (err , user) => {
 		if(user == null){
 			return res.status(500).send({
-				message: : "Invalid username and password"
+				message: "Invalid username and password"
 			})
 		}
 		
 		if(!bcrypt.compareSync(password, user.password)){
 			return res.status(500).send({
-				message: : "Invalid username and password"
+				message:  "Invalid username and password"
 			})
 			
 		}else{
