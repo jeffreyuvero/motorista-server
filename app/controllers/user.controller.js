@@ -105,7 +105,7 @@ exports.findOne = (req, res) => {
 		})
 	}
 
-	let json = {}; 
+	// let json = {}; 
 	User.findById(req.params.id)
 		.then(user => {
 			Login.find({userID: req.params.id})
