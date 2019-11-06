@@ -11,7 +11,11 @@ const jwtExpirySeconds = 300
 
 exports.create = (req, res) => {
 
-	
+	if(!req.headers.authorization){
+		return res.status(500).send({
+			message: "Permission denied"
+		})
+	}
 
 	const token = req.headers.authorization.replace('Bearer ', '');
 	// req.headers.authorization.replace('Bearer ', '');
