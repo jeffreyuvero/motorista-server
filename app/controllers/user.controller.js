@@ -11,7 +11,11 @@ const jwtExpirySeconds = 300
 
 exports.create = (req, res) => {
 
-	
+	if(!req.headers.authorization){
+		return res.status(500).send({
+			message: "Permission denied"
+		})
+	}
 
 	const token = req.headers.authorization.replace('Bearer ', '');
 	// req.headers.authorization.replace('Bearer ', '');
@@ -47,31 +51,38 @@ exports.create = (req, res) => {
 		    image: req.body.contactNumber,
 		});
 
-
 		user.save()
 		.then(data => {
-			const login = new Login({
-			    username: req.body.username,
-			    password: hash, 
-			    userID: data._id
-			});
+			const {username} = req.body; 
+			Login.findOne({username: username}, (err ,user ) => {
+				if(user == null){
+					const login = new Login({
+					    username: username,
+					    password: hash, 
+					    userID: data._id
+					});
 
-			res.send(data)
-			login.save()
-			const motorcycles = req.body.motorcycle; 
+					res.send(data)
+					login.save()
+					const motorcycles = req.body.motorcycle; 
 
-			for(i = 0; i <= motorcycles.length; i++){
-				const motorcycle = new Motorcycle({
-					brand: motorcycles[i].brand,
-					model: motorcycles[i].model,
-					type: motorcycles[i].type,
-					year: motorcycles[i].year,
-					image:motorcycles[i].image,
-					userID: data._id
-				})
-				motorcycle.save();
-			}
-			
+					for(i = 0; i <= motorcycles.length; i++){
+						const motorcycle = new Motorcycle({
+							brand: motorcycles[i].brand,
+							model: motorcycles[i].model,
+							type: motorcycles[i].type,
+							year: motorcycles[i].year,
+							image:motorcycles[i].image,
+							userID: data._id
+						})
+						motorcycle.save();
+					}
+				}else{
+					res.status(500).send({
+					    message: "The username is already exists it must be unique, use a different username"
+					});
+				}
+			})
 		 }).catch(err => {
 		 	res.status(500).send({
 		 	    message: err.message || "Some error occurred while creating the User."

@@ -1,0 +1,35 @@
+{
+	"lastname": "Uvero",
+	"firstname": "Jeffrey", 
+	"middlename": "Equiz", 
+	"address": "Tanza, Cavite",
+	"gender": "Male",
+	"emailAddress": "jeffreyequizuvero@gmail.com",
+	"contactNumber": "09773318104",
+	"username": "jeffreyuvero",
+	"image": "",
+	"password": "jeffrey11",
+	"motorcycle":[
+		{
+			"brand": "YAMAHA",
+			"model": "AEROX 155",
+			"type": "Scooter",
+			"year": "2018",
+			"image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROSrQTRRqU9SPNH8sWowuosoUr0v5QfcEZoyYMRC2PnnHvj40jWw&s"
+		},
+		{
+			"brand": "HONDA",
+			"model": "CBR 150R",
+			"type": "Sports",
+			"year": "2016",
+			"image": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR03_GuTocjceGybjl1W7C23e23KlHQb56KjZE7dHTRFUdmHfLG"
+		},
+		{
+			"brand": "BMW",
+			"model": "R1200GS",
+			"type": "Touring",
+			"year": "2013",
+			"image": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR0H-8h7Nt_XSHJlHyn8804B9-R8RjD4B0I-Kvs1WU0BtSf_T-g"
+		}
+	] 
+}
